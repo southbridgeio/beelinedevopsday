@@ -1,0 +1,80 @@
+review:
+  stage: deploy
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: http://$CI_ENVIRONMENT_SLUG.xpaste.s<номер своего логина>.slurm.io
+    on_stop: stop_review
+  image: centosadmin/kubernetes-helm:v2.14.0
+  script:
+    - kubectl config set-cluster k8s --insecure-skip-tls-verify=true --server=$K8S_API_URL
+    - kubectl config set-credentials ci --token=$K8S_CI_TOKEN_REVIEW
+    - kubectl config set-context ci --cluster=k8s --user=ci
+    - kubectl config use-context ci
+    - helm init --client-only
+    - kubectl get namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG ||
+      kubectl create namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
+    - kubectl get secret web-x-gitlab-registry --namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG ||
+      kubectl create secret docker-registry web-x-gitlab-registry --docker-email admin@southbridge.io
+        --docker-username $CI_DEPLOY_USER
+        --docker-password $CI_DEPLOY_PASSWORD
+        --docker-server $CI_REGISTRY
+        --namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
+    - kubectl get secret web-x --namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG ||
+      kubectl create secret generic web-x
+        --from-literal=db-user=xpaste
+        --from-literal=db-password=secretpass
+        --from-literal=redis-password=redispass
+        --from-literal=errbit-project-key=fakekey
+        --from-literal=secret-key-base=e11282da5b77190170d0169abe275bca6ab8124f001e4ea2fcb0225ded9e947abad
+        --namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
+    - helm upgrade --install $CI_ENVIRONMENT_SLUG-postgres stable/postgresql
+        --set persistence.enabled=false
+        --set postgresDatabase=xpaste
+        --set postgresUser=xpaste
+        --set postgresPassword=secretpass
+        --wait
+        --atomic
+        --timeout 180
+        --namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
+    - helm upgrade --install $CI_ENVIRONMENT_SLUG .helm
+        --set image=$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+        --set imageTag=$CI_COMMIT_REF_SLUG.$CI_PIPELINE_ID
+        --set replicas=1
+        --set env.DB_HOST=$CI_ENVIRONMENT_SLUG-postgres-postgresql
+        --set env.REDIS_HOST=$CI_ENVIRONMENT_SLUG-redis-master
+        --set ingress.host=$CI_ENVIRONMENT_SLUG.xpaste.s<номер своего логина>.slurm.io
+        --wait
+        --atomic
+        --timeout 180
+        --debug
+        --namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
+  when: manual
+  only:
+    - branches
+  except:
+    - master
+    - develop
+
+stop_review:
+  image: centosadmin/kubernetes-helm:v2.14.0
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - kubectl config set-cluster k8s --insecure-skip-tls-verify=true --server=$K8S_API_URL
+    - kubectl config set-credentials ci --token=$K8S_CI_TOKEN_REVIEW
+    - kubectl config set-context ci --cluster=k8s --user=ci
+    - kubectl config use-context ci
+    - helm init --client-only
+    - helm delete --purge $CI_ENVIRONMENT_SLUG
+    - helm delete --purge $CI_ENVIRONMENT_SLUG-postgres
+    - kubectl delete namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_SLUG
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  when: manual
+  only:
+    - branches
+  except:
+    - master
+    - develop
