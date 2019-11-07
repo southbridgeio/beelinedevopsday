@@ -1,0 +1,8 @@
+---
+# tasks file for common
+#
+- name: Start ssh
+  service:
+    name: ssh
+    state: started
+    enabled: true
