@@ -60,7 +60,7 @@ deploy:
         --timeout 300
         --atomic
         --debug
-        --namespace $CI_PROJECT_NAMESPACE-$CI_ENVIRONMENT_NAME
-        --tiller-namespace=$CI_PROJECT_NAMESPACE-$CI_ENVIRONMENT_NAME
+        --namespace $CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_NAME
+        --tiller-namespace=$CI_PROJECT_PATH_SLUG-$CI_ENVIRONMENT_NAME
   only:
     - master
