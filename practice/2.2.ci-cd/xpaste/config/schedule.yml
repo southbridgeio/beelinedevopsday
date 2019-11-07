@@ -1,0 +1,8 @@
+# файл для cron задач
+
+# DAILY
+
+delete_expired_paste:
+  cron: "7 0 * * *" # Каждые день в 00:07
+  class: "Cron::Paste::DeleteJob"
+  queue: cron

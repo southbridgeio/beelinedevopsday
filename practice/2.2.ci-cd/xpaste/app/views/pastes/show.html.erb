@@ -1,0 +1,50 @@
+<% if @paste.auto_destroy? and params[:destroy].nil? %>
+  <div class="ui container">
+    <div class="ui center aligned">
+      <%= render 'copy_to_clipboard' %>
+    </div>
+
+    <br>
+    <div class="ui negative message center aligned">
+      <div class="header">
+        <%= t('pastes.show.destroy_alert') %>
+      </div>
+      <br>
+
+      <p>
+        <%= link_to t('.open_and_destroy'), paste_path(@paste, destroy: true), class: 'ui red button' %>
+        <%= link_to t('.go_to_root'), root_path %>
+      </p></div>
+  </div>
+<% else %>
+  <div class="ui container">
+    <strong><%= Paste.human_attribute_name :language %>:</strong>
+    <%= @paste.language.text %>
+    <br>
+    <strong><%= Paste.human_attribute_name :created_at %>:</strong>
+    <%= @paste.created_at %>
+    <br>
+    <strong><%= Paste.human_attribute_name :will_be_deleted_at %>:</strong>
+    <%= @paste.will_be_deleted_at %>
+    <br><br>
+
+    <% if @paste.auto_destroy? %>
+      <div class="ui negative message center aligned">
+        <div class="header">
+          <%= t('.paste_destroyed') %>
+        </div>
+      </div>
+    <% else %>
+      <%= render 'copy_to_clipboard' %>
+    <% end %>
+  </div>
+  <div class="ui segment" style="margin: 15px">
+    <% if @paste.language == 'text' %>
+      <pre><%= @paste.body %></pre>
+    <% elsif @paste.language == 'markdown' %>
+      <%= markdown @paste.body %>
+    <% else %>
+      <pre id="code"<%= ' class=no-highlight' if params[:highlight] == 'false' %>><code class="<%= @paste.language %>"><%= @paste.body %></code></pre>
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,50 @@
+body > .ui.container {
+  margin-top: 3em;
+}
+
+.ui.container > h1 {
+  font-size: 3em;
+  text-align: center;
+  font-weight: normal;
+}
+.ui.container > h2.dividing.header {
+  font-size: 2em;
+  font-weight: normal;
+  margin: 4em 0em 3em;
+}
+
+
+.ui.table {
+  table-layout: fixed;
+}
+
+
+.ui[class*="left aligned"] {
+  text-align: left;
+}
+.ui[class*="right aligned"] {
+  text-align: right;
+}
+.ui[class*="center aligned"] {
+  text-align: center;
+}
+
+.ui.message {
+  width: 500px;
+  margin: auto;
+
+  .button {
+    margin-right: 20px;
+  }
+}
+
+#paste_ttl_days {
+  width: 80px;
+  margin-right: 10px;
+}
+
+
+pre {
+  font-family: Consolas,Menlo,Monaco,"Lucida Console","Liberation Mono","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace,serif;
+  font-size: 13px;
+}

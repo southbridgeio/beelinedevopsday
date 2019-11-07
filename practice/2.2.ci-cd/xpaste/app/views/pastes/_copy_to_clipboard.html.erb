@@ -1,0 +1,7 @@
+<div class="ui input">
+  <%= text_field_tag :url, paste_url(@paste), size: 75 %>
+</div>
+
+<%= button_tag class: 'ui icon basic button clipboard', data: {clipboard_target: '#url', content: 'Copy to clipboard', variation: 'inverted'} do %>
+  <%= semantic_icon 'copy' %>
+<% end %>

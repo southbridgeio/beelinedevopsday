@@ -1,0 +1,36 @@
+<%= form_for(@paste, html: { class: 'ui form' }) do |f| %>
+  <% if @paste.errors.any? %>
+    <div class="ui negative message">
+      <ul>
+        <% @paste.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :language %>
+    <%= f.select :language, Paste.language.options.sort, {}, { class: 'ui fluid dropdown' } %>
+  </div>
+  <div class="field">
+    <%= f.label :body %>
+    <%= f.text_area :body, autofocus: true %>
+  </div>
+
+  <div class="inline field">
+    <%= f.label :ttl_days %>
+    <%= f.number_field :ttl_days, max: 5000 %>
+    <%= t('activerecord.attributes.paste.days') %>
+  </div>
+
+  <div class="field">
+    <div class="ui checkbox">
+      <%= f.check_box :auto_destroy %>
+      <%= f.label :auto_destroy %>
+    </div>
+  </div>
+  <div class="actions">
+    <%= f.submit t('.create'), class: 'ui button' %>
+  </div>
+<% end %>

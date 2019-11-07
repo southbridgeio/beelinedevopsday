@@ -1,0 +1,86 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  help: "Help"
+  enumerize:
+    paste:
+      language:
+        text: "Plain Text"
+        markdown: "Markdown"
+  activerecord:
+    models:
+      paste: "Paste"
+    attributes:
+      paste:
+        body: "Body"
+        language: "Language"
+        auto_destroy: "destroy after viewing"
+        created_at: "Created at"
+        will_be_deleted_at: Will be deleted at
+        ttl_days: Will be deleted after
+        days: days
+  pastes:
+    new:
+      title: "New Paste"
+    show:
+      go_to_root: "Go to Root"
+      open_and_destroy: "Open and Destroy Paste"
+      destroy_alert: "After viewing the paste will be destroyed"
+      paste_destroyed: "Paste destroyed"
+    help:
+      contact_with_us: "Contact with us"
+      open_page: "To open page without highlight, you can add to URL parameter ?highlight=false."
+      create_method:
+        title: "Create a paste in three ways"
+        form: "the form on this site"
+        text_post: "text POST request"
+        json_post: "JSON POST request"
+      post_address: "POST request URL"
+      available_params: "Available params"
+      text_length_limit: "no larger than"
+      required: "required"
+      max_text_limit: "The maximum length of text"
+      one_of_x_values: "can take one of two values"
+      or: "or"
+      default_language: "The parameter default"
+      auto_destroy: "sets if you want to destroy the note after the show."
+      text_examples: "Examples for the text request"
+      short_text: "Short text"
+      file_sending: "File sending"
+      long_text: "Large message prefer post via file"
+      long_text_cut: "If the file size exceeds 512 kb, in a paste written only 512 kb of data."
+      auto_destroy_example: "Example of a request to create a auto-destroyable paste"
+      json_request: "JSON request"
+      ttl_days: "delete the note after specified number of days. Default - 365."
+      ttl_days_example: "Example of a request to create a note for a specified lifetime in days:"
+    form:
+      create: "Create"

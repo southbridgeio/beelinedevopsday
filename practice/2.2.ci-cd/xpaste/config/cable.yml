@@ -1,0 +1,11 @@
+development:
+  adapter: async
+
+test:
+  adapter: async
+
+production:
+  adapter: redis
+  url: redis://user:<%= ENV["REDIS_PASSWORD"] %>@<%= ENV["REDIS_HOST"] %>:<%= ENV["REDIS_PORT"] %>/1
+  channel_prefix: x_paste_production
+

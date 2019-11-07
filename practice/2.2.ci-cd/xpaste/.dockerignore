@@ -1,0 +1,7 @@
+.git
+.cache
+.gitignore
+.gitlab-ci.yml
+.kube
+.helm
+

@@ -1,0 +1,73 @@
+<div class="ui container">
+  <h1><%= t 'help' %></h1>
+
+  <p><%= t('.contact_with_us') %>: ask@southbridge.io /
+    <a href="https://southbridge.io" target="_blank">www.southbridge.io</a></p>
+
+  <p><%= t('.open_page') %></p>
+
+  <p><%= t('.create_method.title') %>:</p>
+  <ul>
+    <li><%= t('.create_method.form') %>;</li>
+    <li><%= t('.create_method.text_post') %>;</li>
+    <li><%= t('.create_method.json_post') %>.</li>
+  </ul>
+
+  <%= t('.post_address') %>:
+  <code><%= "#{root_url}paste" %></code>
+  <p>
+    <%= t('.available_params') %>:</p>
+  <pre>
+  paste:
+    language: text|markdown
+    body: <%= t('pastes.help.text_length_limit') %> 512 kb
+    auto_destroy: true
+    ttl_days: 365
+</pre>
+  <ul>
+    <li>
+      <strong>body</strong> - <%= t('pastes.help.required') %>
+      . <%= t('pastes.help.max_text_limit') %> - 512 kb.
+    </li>
+    <li>
+      <strong>language</strong> <%= t('pastes.help.one_of_x_values') %>
+      <code>text</code> <%= t('pastes.help.or') %> <code>markdown</code>.
+      <%= t('pastes.help.default_language') %> (<code>text</code>).
+    </li>
+    <li>
+      <strong>auto_destroy</strong> <%= t('pastes.help.auto_destroy') %>
+    </li>
+    <li>
+      <strong>ttl_days</strong> <%= t('pastes.help.ttl_days') %>
+    </li>
+  </ul>
+
+  <h2><%= t('pastes.help.text_examples') %></h2>
+
+  <p><%= t('pastes.help.short_text') %>:</p>
+  <pre>curl -d "paste[language]=text" -d "paste[body]=short text message" <%= "#{root_url}paste" %></pre>
+  <pre>curl -d "paste[language]=text" -d "paste[body]=short text message" -d "paste[ttl_days]=17" <%= "#{root_url}paste" %></pre>
+  <pre>curl -d "paste[language]=markdown" -d "paste[body]=**Markdown** _text_ message" <%= "#{root_url}paste" %></pre>
+  <pre>curl -d "paste[auto_destroy]=true" -d "paste[language]=markdown" -d "paste[body]=**Markdown** _text_ message" <%= "#{root_url}paste" %></pre>
+  <h3><%= t('pastes.help.file_sending') %></h3>
+  <p><%= t('pastes.help.long_text') %>:</p>
+
+  <pre>curl -H "Content-Type: text/plain" --data-binary "@file_name" <%= paste_file_url(language: 'markdown') %></pre>
+
+  <p><strong><%= t('pastes.help.long_text_cut') %></strong></p>
+
+  <p><%= t('pastes.help.ttl_days_example') %>:</p>
+
+  <pre>curl -H "Content-Type: text/plain" --data-binary "@file_name" <%= paste_file_url(language: 'markdown', ttl_days: 7) %></pre>
+
+  <p><%= t('pastes.help.auto_destroy_example') %>:</p>
+
+  <pre>curl -H "Content-Type: text/plain" --data-binary "@file_name" <%= paste_file_url(language: 'markdown', auto_destroy: true) %></pre>
+
+  <h2><%= t('pastes.help.json_request') %></h2>
+  <pre>
+  curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST \
+    -d '{"paste":{"language":"text","body":"text"}}'  <%= "#{root_url}paste" %>
+</pre>
+  <br><br><br>
+</div>
